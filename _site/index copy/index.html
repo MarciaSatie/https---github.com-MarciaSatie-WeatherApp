@@ -11,62 +11,65 @@
 <body>
   <div style="max-width: 1200px; margin: 0 auto;">
     <!-- _includes/header.njk -->
-<header class="hero is-warning">
+
+<script>
+   document.addEventListener("DOMContentLoaded", () => {
+      const parentListIDs =[ "menuDropDown","mainMenu"];
+      
+      // Get current path (e.g. "/dashboard/")
+      const currentPath = window.location.pathname;
+      
+      const menuLinks =[
+        { text: "City Weather", href: "/index/" },
+        { text: "Dashboard", href: "/dashboard/" },
+        { text: "Preferences", href: "/preferences/" },
+      ];
+
+      parentListIDs.forEach((ids)=>{
+        const parentDiv = document.getElementById(ids)
+
+         const menuIsActive = menuLinks.map(menuLink =>{
+          const linkTrinned = menuLink.href.replace(/\/+$/, '');// Regex to take of last "/"
+          //console.log(currentPath+"||"+linkTrinned);
+          if(currentPath.indexOf(linkTrinned) !==-1){
+            //console.log("is a match");
+            return `<a class="navbar-item has-text-weight-bold" href=${menuLink.href}> ${menuLink.text} </a>`
+          }else{
+            //console.log("is NOT a match");
+            return `<a class="navbar-item" href=${menuLink.href}> ${menuLink.text} </a>`
+          } ;
+          
+        });
+        parentDiv.innerHTML=menuIsActive.join(``);
+      });
+
+      
+  });
+</script>
+
+<header class="hero is-warning p-2">
   <div class="container">
     <div class="columns is-vcentered">
       <div class="column">
         <img src="/assets/logo.png">
       </div>
-      <div class="column is-flex is-flex-direction-column is-align-items-center is-justify-content-center">
-        <h1 class="title" id="cityName" ></h1>
+      
+      
+      <div class="column is-flex is-flex-direction-column is-align-items-center is-justify-content-center ">
+        <h1 class="title is-size-1" id="cityName" ></h1>
         <h2 class="subtitle" id="cityWeekday"></h2>
-        
+         <!--NavBar DropDwond Menu-->
+        <div id="menuDropDown" class="navbar-dropdown" aria-label="menu" aria-expanded="false" data-target="navbarBasicExample">
+
+          <!--Menu filled with Javascript-->
+        </div>
+
         <!--NavBar-->
         <nav class="navbar" role="navigation" aria-label="main navigation">
-          <div class="navbar-brand">
-
-            <a role="button" class="navbar-burger" aria-label="menu" aria-expanded="false" data-target="navbarBasicExample">
-              <span aria-hidden="true"></span>
-              <span aria-hidden="true"></span>
-              <span aria-hidden="true"></span>
-              <span aria-hidden="true"></span>
-            </a>
-          </div>
-        
           <div id="navbarBasicExample" class="navbar-menu">
-            <div class="navbar-start">
-              <a class="navbar-item" href="/dashboard/">
-
-                Dashboard
-              </a>
-        
-              <a class="navbar-item">
-                Preferences
-              </a>
-        
-              <div class="navbar-item has-dropdown is-hoverable">
-                <a class="navbar-link">
-                  More
-                </a>
-        
-                <div class="navbar-dropdown">
-                  <a class="navbar-item">
-                    About
-                  </a>
-                  <a class="navbar-item is-selected">
-                    Jobs
-                  </a>
-                  <a class="navbar-item">
-                    Contact
-                  </a>
-                  <hr class="navbar-divider">
-                  <a class="navbar-item">
-                    Report an issue
-                  </a>
-                </div>
-              </div>
+            <div id="mainMenu" class="navbar-start">
+              <!--Menu filled with Javascript-->
             </div>
-      
           </div>
         </nav>
         <!--NavBar-->
@@ -83,26 +86,12 @@
 <script src="./src/preferences.js"></script>
  <!-- Javascript -->
 <script>
-    document.addEventListener("DOMContentLoaded", () => {
-        
-    const days = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
-    const today = new Date();// javascript premade object that returns current day.
-    const dayWeekNumber = today.getDay();// return a number  from 0 (Sunday) to 6 (Saturday)
-    console.log(dayWeekNumber);
-    let hour = today.getHours();   
-    console.log(hour);
-    const cityChoice = dotify.preferences.city;
-    
-    const cityData = dotify.utils.getCityObj(cityChoice);
-    const cityHourly = dotify.utils.getHourObj(cityChoice);
-    dotify.utils.updateCardRightNow(cityHourly.hourly.temperature_2m[hour],cityHourly.hourly.wind_speed_10m[hour])
-    dotify.utils.updateTitles(cityChoice);
-    dotify.utils.updateCardTemp(cityData.daily.temperature_2m_max[0]);
-    dotify.utils.updateCardWind(cityData.daily.wind_speed_10m_max[0]);
-    dotify.utils.updateSmallWeekCards(days, dayWeekNumber, cityData);
-
-    
+   document.addEventListener("DOMContentLoaded", () => {
+  // Get city from localStorage or fallback to a default
+  const savedCity = localStorage.getItem("selectedCity") || "waterford";
+  dotify.utils.changeCity(savedCity);
 });
+
 
 </script>
 
@@ -117,10 +106,13 @@
             
             <!-- Max Temp and Max Wind -->
             <div class="cell">
+                <div class="notification is-info is-dark">
+                    <h1 class="is-size-4 has-text-weight-semibold has-text-white">Today's information</h1>
+                </div>
                 <div class="fixed-grid">
                     <div class="grid">
                         <div class="cell is-col-span-2">
-                            <div class="box has-background-primary">
+                            <div class="box has-background-primary ">
                                 <h1 class="title is-size-5">Right Now</h1>
             
                                 <p id="cardRN" ></p>
@@ -151,7 +143,10 @@
 
 </section>
 <section class="section">
-    <div class="container">
+    <div class="container ">
+        <div class="notification is-info is-dark">
+            <h1 class="is-size-5 has-text-weight-semibold  has-text-white ">Check the weather for the next 6 days</h1>
+        </div>
         <div id="weekcards" class="columns is-multiline is-centered">
 
             <!--This area will be filled using Javascript-->
