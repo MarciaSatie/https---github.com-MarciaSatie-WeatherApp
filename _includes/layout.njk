@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html class="theme-light" lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@1.0.2/css/bulma.min.css">
+  <title>Weather App</title>
+  <script src="../src/dotify.js"></script>
+  <script src="../data/weather_data.js"></script>
+</head>
+<body>
+  <div style="max-width: 1200px; margin: 0 auto;">
+    {% include "header.njk" %}
+    <br>
+    <main class="m-5">
+      {{content | safe}}
+    </main>
+  </div>
+</body>
+</html>

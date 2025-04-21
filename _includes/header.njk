@@ -1,0 +1,69 @@
+<!-- _includes/header.njk -->
+
+<script>
+   document.addEventListener("DOMContentLoaded", () => {
+      const parentListIDs =[ "menuDropDown","mainMenu"];
+      
+      // Get current path (e.g. "/dashboard/")
+      const currentPath = window.location.pathname;
+      
+      const menuLinks =[
+        { text: "City Weather", href: "{{ '/index/' | url }}" },
+        { text: "Dashboard", href: "{{ '/dashboard/' | url }}" },
+        { text: "Preferences", href: "{{ '/preferences/' | url }}" },
+      ];
+
+      parentListIDs.forEach((ids)=>{
+        const parentDiv = document.getElementById(ids)
+
+         const menuIsActive = menuLinks.map(menuLink =>{
+          const linkTrinned = menuLink.href.replace(/\/+$/, '');// Regex to take of last "/"
+          //console.log(currentPath+"||"+linkTrinned);
+          if(currentPath.indexOf(linkTrinned) !==-1){
+            //console.log("is a match");
+            return `<a class="navbar-item has-text-weight-bold" href=${menuLink.href}> ${menuLink.text} </a>`
+          }else{
+            //console.log("is NOT a match");
+            return `<a class="navbar-item" href=${menuLink.href}> ${menuLink.text} </a>`
+          } ;
+          
+        });
+        parentDiv.innerHTML=menuIsActive.join(``);
+      });
+
+      
+  });
+</script>
+
+<header class="hero is-warning p-2">
+  <div class="container">
+    <div class="columns is-vcentered">
+      <div class="column">
+        <img src="/assets/logo.png">
+      </div>
+      
+      
+      <div class="column is-flex is-flex-direction-column is-align-items-center is-justify-content-center ">
+        <h1 class="title is-size-1" id="cityName" ></h1>
+        <h2 class="subtitle" id="cityWeekday"></h2>
+         <!--NavBar DropDwond Menu-->
+        <div id="menuDropDown" class="navbar-dropdown" aria-label="menu" aria-expanded="false" data-target="navbarBasicExample">
+
+          <!--Menu filled with Javascript-->
+        </div>
+
+        <!--NavBar-->
+        <nav class="navbar" role="navigation" aria-label="main navigation">
+          <div id="navbarBasicExample" class="navbar-menu">
+            <div id="mainMenu" class="navbar-start">
+              <!--Menu filled with Javascript-->
+            </div>
+          </div>
+        </nav>
+        <!--NavBar-->
+        
+      </div> <!--End of Container-->
+      
+    </div>
+  </div>
+</header>

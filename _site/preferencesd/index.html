@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html class="theme-light" lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@1.0.2/css/bulma.min.css">
+  <title>Weather App</title>
+  <script src="../src/dotify.js"></script>
+  <script src="../data/weather_data.js"></script>
+</head>
+<body>
+  <div style="max-width: 1200px; margin: 0 auto;">
+    <!-- _includes/header.njk -->
+
+<script>
+   document.addEventListener("DOMContentLoaded", () => {
+      const parentListIDs =[ "menuDropDown","mainMenu"];
+      
+      // Get current path (e.g. "/dashboard/")
+      const currentPath = window.location.pathname;
+      
+      const menuLinks =[
+        { text: "City Weather", href: "/index/" },
+        { text: "Dashboard", href: "/dashboard/" },
+        { text: "Preferences", href: "/preferences/" },
+      ];
+
+      parentListIDs.forEach((ids)=>{
+        const parentDiv = document.getElementById(ids)
+
+         const menuIsActive = menuLinks.map(menuLink =>{
+          const linkTrinned = menuLink.href.replace(/\/+$/, '');// Regex to take of last "/"
+          console.log(currentPath+"||"+linkTrinned);
+          if(currentPath.indexOf(linkTrinned) !==-1){
+            console.log("is a match");
+            return `<a class="navbar-item has-text-weight-bold" href=${menuLink.href}> ${menuLink.text} </a>`
+          }else{
+            console.log("is NOT a match");
+            return `<a class="navbar-item" href=${menuLink.href}> ${menuLink.text} </a>`
+          } ;
+          
+        });
+        parentDiv.innerHTML=menuIsActive.join(``);
+      });
+
+      
+  });
+</script>
+
+<header class="hero is-warning p-2">
+  <div class="container">
+    <div class="columns is-vcentered">
+      <div class="column">
+        <img src="/assets/logo.png">
+      </div>
+      
+      
+      <div class="column is-flex is-flex-direction-column is-align-items-center is-justify-content-center ">
+        <h1 class="title is-size-1" id="cityName" ></h1>
+        <h2 class="subtitle" id="cityWeekday"></h2>
+         <!--NavBar DropDwond Menu-->
+        <div id="menuDropDown" class="navbar-dropdown" aria-label="menu" aria-expanded="false" data-target="navbarBasicExample">
+
+          <!--Menu filled with Javascript-->
+        </div>
+
+        <!--NavBar-->
+        <nav class="navbar" role="navigation" aria-label="main navigation">
+          <div id="navbarBasicExample" class="navbar-menu">
+            <div id="mainMenu" class="navbar-start">
+              <!--Menu filled with Javascript-->
+            </div>
+          </div>
+        </nav>
+        <!--NavBar-->
+        
+      </div> <!--End of Container-->
+      
+    </div>
+  </div>
+</header>
+
+    <br>
+    <main class="m-5">
+      <script src="/src/preferences.js" type="module"></script>
+<script src="/src/utils.js"></script>
+ <!-- Javascript -->
+<script>
+    let currentCity ="";
+    document.addEventListener("DOMContentLoaded", () => {
+        //Updating Title
+        document.getElementById("cityName").textContent = "Dashboard";
+
+        //Filling city cards
+        const cityCards = document.getElementById("dashcards");
+        const cityList = dotify.preferences.arrayCity;
+        const cityListNameFix = dotify.utils.formattedCities(cityList);
+        const todayIndex = 0;
+        let count = 0;
+        
+
+        cityList.forEach(city => {
+            const column = document.createElement("div");
+            column.className = "column is-one-fifth";
+            currentCity= city;
+            console.log(currentCity);
+            const cityData =  dotify.utils.getCityObj(city);
+            const min = cityData.daily.temperature_2m_min[todayIndex];
+            const max = cityData.daily.temperature_2m_max[todayIndex];
+
+            column.innerHTML = `
+                 <a href="/index/" id="${city}" onclick="myFunction(event)">
+                    <div class="box has-background-primary is-flex is-flex-direction-column is-align-items-center min-height: 250px;">
+                        <h1 class="title is-size-5">${cityListNameFix[count]}</h1>
+                        <img src="/assets/sun.png" class="image is-64x64">
+                        <p>Min ${min} ${celsius}</p>
+                        <p>Max ${max} ${celsius}</p>
+                    </div>
+                
+
+            `;
+
+            cityCards.appendChild(column);
+        count++;
+        });
+    });
+
+    function myFunction(event) {
+        try {
+            const cityId = event.currentTarget.id; // to get id from <a>, event carries details about the click action.
+            
+            dotify.preferences.setCity(cityId);// Using this funciton to save cityId information to LocalStorage.
+            //alert("Changing city to: " + cityId);
+
+            window.location.href = `/index/`; // returns the href (URL) of the current page, redirecting the user to /index/
+
+        } catch (error) {
+            alert(error);
+    }
+}
+</script>
+
+<!-- HTML code -->
+<section class="section">
+    prefrences
+</section>
+<br><br>
+
+    </main>
+  </div>
+</body>
+</html>

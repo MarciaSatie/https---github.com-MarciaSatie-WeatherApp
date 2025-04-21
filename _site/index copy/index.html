@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html class="theme-light" lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@1.0.2/css/bulma.min.css">
+  <title>Weather App</title>
+  <script src="../src/dotify.js"></script>
+  <script src="../data/weather_data.js"></script>
+</head>
+<body>
+  <div style="max-width: 1200px; margin: 0 auto;">
+    <!-- _includes/header.njk -->
+<header class="hero is-warning">
+  <div class="container">
+    <div class="columns is-vcentered">
+      <div class="column">
+        <img src="/assets/logo.png">
+      </div>
+      <div class="column is-flex is-flex-direction-column is-align-items-center is-justify-content-center">
+        <h1 class="title" id="cityName" ></h1>
+        <h2 class="subtitle" id="cityWeekday"></h2>
+        
+        <!--NavBar-->
+        <nav class="navbar" role="navigation" aria-label="main navigation">
+          <div class="navbar-brand">
+
+            <a role="button" class="navbar-burger" aria-label="menu" aria-expanded="false" data-target="navbarBasicExample">
+              <span aria-hidden="true"></span>
+              <span aria-hidden="true"></span>
+              <span aria-hidden="true"></span>
+              <span aria-hidden="true"></span>
+            </a>
+          </div>
+        
+          <div id="navbarBasicExample" class="navbar-menu">
+            <div class="navbar-start">
+              <a class="navbar-item" href="/dashboard/">
+
+                Dashboard
+              </a>
+        
+              <a class="navbar-item">
+                Preferences
+              </a>
+        
+              <div class="navbar-item has-dropdown is-hoverable">
+                <a class="navbar-link">
+                  More
+                </a>
+        
+                <div class="navbar-dropdown">
+                  <a class="navbar-item">
+                    About
+                  </a>
+                  <a class="navbar-item is-selected">
+                    Jobs
+                  </a>
+                  <a class="navbar-item">
+                    Contact
+                  </a>
+                  <hr class="navbar-divider">
+                  <a class="navbar-item">
+                    Report an issue
+                  </a>
+                </div>
+              </div>
+            </div>
+      
+          </div>
+        </nav>
+        <!--NavBar-->
+        
+      </div> <!--End of Container-->
+      
+    </div>
+  </div>
+</header>
+
+    <br>
+    <main class="m-5">
+      <script src="./src/utils.js"></script>
+<script src="./src/preferences.js"></script>
+ <!-- Javascript -->
+<script>
+    document.addEventListener("DOMContentLoaded", () => {
+        
+    const days = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
+    const today = new Date();// javascript premade object that returns current day.
+    const dayWeekNumber = today.getDay();// return a number  from 0 (Sunday) to 6 (Saturday)
+    console.log(dayWeekNumber);
+    let hour = today.getHours();   
+    console.log(hour);
+    const cityChoice = dotify.preferences.city;
+    
+    const cityData = dotify.utils.getCityObj(cityChoice);
+    const cityHourly = dotify.utils.getHourObj(cityChoice);
+    dotify.utils.updateCardRightNow(cityHourly.hourly.temperature_2m[hour],cityHourly.hourly.wind_speed_10m[hour])
+    dotify.utils.updateTitles(cityChoice);
+    dotify.utils.updateCardTemp(cityData.daily.temperature_2m_max[0]);
+    dotify.utils.updateCardWind(cityData.daily.wind_speed_10m_max[0]);
+    dotify.utils.updateSmallWeekCards(days, dayWeekNumber, cityData);
+
+    
+});
+
+</script>
+
+<!-- HTML code -->
+<section>
+    <div class="fixed-grid">
+        <div class="grid">
+
+            <div class="cell">
+                <img src="assets/sun.png" class="image is-128sx128">
+            </div>
+            
+            <!-- Max Temp and Max Wind -->
+            <div class="cell">
+                <div class="fixed-grid">
+                    <div class="grid">
+                        <div class="cell is-col-span-2">
+                            <div class="box has-background-primary">
+                                <h1 class="title is-size-5">Right Now</h1>
+            
+                                <p id="cardRN" ></p>
+                            </div>
+                        </div>
+                        <div class="cell">
+                            <div class="box has-background-primary">
+                                <h1 class="title is-size-5">Max Temp</h1>
+            
+                                <p id="card1" ></p>
+                            </div>
+                        </div>
+                        <div class="cell">
+                            <div class="box has-background-primary">
+                                <h1 class="title is-size-5">Max Wind</h1>
+            
+                                <p id="cardWind" ></p>
+                            </div>
+                        </div>
+    
+                    </div>
+
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+</section>
+<section class="section">
+    <div class="container">
+        <div id="weekcards" class="columns is-multiline is-centered">
+
+            <!--This area will be filled using Javascript-->
+        </div>
+    </div>
+</section>
+
+<br><br>
+
+    </main>
+  </div>
+</body>
+</html>

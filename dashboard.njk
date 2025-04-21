@@ -1,0 +1,77 @@
+---
+layout: "layout.njk"
+title: Dashboard
+---
+<script src="/src/preferences.js" type="module"></script>
+<script src="/src/utils.js"></script>
+ <!-- Javascript -->
+<script>
+
+    document.addEventListener("DOMContentLoaded", () => {
+        //Updating Title
+        document.getElementById("cityName").textContent = "Dashboard";
+        
+        
+        //Add List of Favorite cities to HTML ------------------------------------------------
+        const favDiv = document.getElementById("favCityCardsContainer");
+        const cityList = dotify.preferences.arrayCity;
+
+        const retriveStringArray = localStorage.getItem("favoriteCities");
+        //console.log("retriveStringArray:"+ retriveStringArray);
+        const favoriteCitiesList = JSON.parse(retriveStringArray);
+        //console.log("favoriteCitiesList:"+ favoriteCitiesList);
+
+        //if cityList.lenght is bigger than 0, remove is-hidden from favDiv div. else add it.
+        if(favoriteCitiesList !== null && favoriteCitiesList !== "" && favoriteCitiesList.length > 0){
+            dotify.utils.loadCardList(favoriteCitiesList,"favCityCards");
+            favDiv.classList.remove("is-hidden")
+        }else {
+            favDiv.classList.add("is-hidden");   
+        }
+       
+
+        //Add List of All cities to HTML------------------------------------------------------
+        dotify.utils.loadCardList(cityList,"dashcards");
+    });
+
+    function myFunction(event) {
+        try {
+            const cityId = event.currentTarget.id; // to get id from <a>, event carries details about the click action.
+            localStorage.setItem("selectedCity", cityId);
+
+            window.location.href = `/index/`; // returns the href (URL) of the current page, redirecting the user to /index/
+
+        } catch (error) {
+            alert(error);
+    }
+}
+</script>
+
+<!-- HTML code -->
+<section class="section">
+    <div class="container">
+
+        <!-- Favorite Cities Cards -->
+        <div id="favCityCardsContainer" class="is-hidden">
+            <div class="notification is-info is-dark">
+                <h1 class="is-size-4 has-text-weight-semibold has-text-white pb-5">Favorite Cities</h1>
+                <div  id="favCityCards" class="columns is-multiline is-centered has-background-primary-100">
+
+                    <!--This area will be filled using Javascript-->
+                </div>
+            </div>
+            <!--This area will be filled using Javascript-->
+        </div>
+        <br/><br/>
+
+        <!-- All Cities Cards -->
+        <div class="notification is-info is-dark">
+            <h1 class="is-size-4 has-text-weight-semibold has-text-white"> Cities</h1>
+        </div>
+        <div id="dashcards" class="columns is-multiline is-centered">
+
+            <!--This area will be filled using Javascript-->
+        </div>
+    </div>
+</section>            
+<br><br>

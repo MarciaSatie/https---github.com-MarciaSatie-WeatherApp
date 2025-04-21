@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html class="theme-light" lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@1.0.2/css/bulma.min.css">
+  <title>Weather App</title>
+  <script src="../src/dotify.js"></script>
+  <script src="../data/weather_data.js"></script>
+</head>
+<body>
+  <div style="max-width: 1200px; margin: 0 auto;">
+    <!-- _includes/header.njk -->
+
+<script>
+   document.addEventListener("DOMContentLoaded", () => {
+      const parentListIDs =[ "menuDropDown","mainMenu"];
+      
+      // Get current path (e.g. "/dashboard/")
+      const currentPath = window.location.pathname;
+      
+      const menuLinks =[
+        { text: "City Weather", href: "/index/" },
+        { text: "Dashboard", href: "/dashboard/" },
+        { text: "Preferences", href: "/preferences/" },
+      ];
+
+      parentListIDs.forEach((ids)=>{
+        const parentDiv = document.getElementById(ids)
+
+         const menuIsActive = menuLinks.map(menuLink =>{
+          const linkTrinned = menuLink.href.replace(/\/+$/, '');// Regex to take of last "/"
+          //console.log(currentPath+"||"+linkTrinned);
+          if(currentPath.indexOf(linkTrinned) !==-1){
+            //console.log("is a match");
+            return `<a class="navbar-item has-text-weight-bold" href=${menuLink.href}> ${menuLink.text} </a>`
+          }else{
+            //console.log("is NOT a match");
+            return `<a class="navbar-item" href=${menuLink.href}> ${menuLink.text} </a>`
+          } ;
+          
+        });
+        parentDiv.innerHTML=menuIsActive.join(``);
+      });
+
+      
+  });
+</script>
+
+<header class="hero is-warning p-2">
+  <div class="container">
+    <div class="columns is-vcentered">
+      <div class="column">
+        <img src="/assets/logo.png">
+      </div>
+      
+      
+      <div class="column is-flex is-flex-direction-column is-align-items-center is-justify-content-center ">
+        <h1 class="title is-size-1" id="cityName" ></h1>
+        <h2 class="subtitle" id="cityWeekday"></h2>
+         <!--NavBar DropDwond Menu-->
+        <div id="menuDropDown" class="navbar-dropdown" aria-label="menu" aria-expanded="false" data-target="navbarBasicExample">
+
+          <!--Menu filled with Javascript-->
+        </div>
+
+        <!--NavBar-->
+        <nav class="navbar" role="navigation" aria-label="main navigation">
+          <div id="navbarBasicExample" class="navbar-menu">
+            <div id="mainMenu" class="navbar-start">
+              <!--Menu filled with Javascript-->
+            </div>
+          </div>
+        </nav>
+        <!--NavBar-->
+        
+      </div> <!--End of Container-->
+      
+    </div>
+  </div>
+</header>
+
+    <br>
+    <main class="m-5">
+      <script src="./src/utils.js"></script>
+<script src="./src/preferences.js"></script>
+ <!-- Javascript -->
+<script>
+   document.addEventListener("DOMContentLoaded", () => {
+  // Get city from localStorage or fallback to a default
+  const savedCity = localStorage.getItem("selectedCity") || "waterford";
+  dotify.utils.changeCity(savedCity);
+});
+
+
+</script>
+
+<!-- HTML code -->
+<section>
+    <div class="fixed-grid">
+        <div class="grid">
+
+            <div class="cell">
+                <img src="assets/sun.png" class="image is-128sx128">
+            </div>
+            
+            <!-- Max Temp and Max Wind -->
+            <div class="cell">
+                <div class="notification is-info is-dark">
+                    <h1 class="is-size-4 has-text-weight-semibold has-text-white">Today's information</h1>
+                </div>
+                <div class="fixed-grid">
+                    <div class="grid">
+                        <div class="cell is-col-span-2">
+                            <div class="box has-background-primary ">
+                                <h1 class="title is-size-5">Right Now</h1>
+            
+                                <p id="cardRN" ></p>
+                            </div>
+                        </div>
+                        <div class="cell">
+                            <div class="box has-background-primary">
+                                <h1 class="title is-size-5">Max Temp</h1>
+            
+                                <p id="card1" ></p>
+                            </div>
+                        </div>
+                        <div class="cell">
+                            <div class="box has-background-primary">
+                                <h1 class="title is-size-5">Max Wind</h1>
+            
+                                <p id="cardWind" ></p>
+                            </div>
+                        </div>
+    
+                    </div>
+
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+</section>
+<section class="section">
+    <div class="container ">
+        <div class="notification is-info is-dark">
+            <h1 class="is-size-5 has-text-weight-semibold  has-text-white ">Check the weather for the next 6 days</h1>
+        </div>
+        <div id="weekcards" class="columns is-multiline is-centered">
+
+            <!--This area will be filled using Javascript-->
+        </div>
+    </div>
+</section>
+
+<br><br>
+
+    </main>
+  </div>
+</body>
+</html>
