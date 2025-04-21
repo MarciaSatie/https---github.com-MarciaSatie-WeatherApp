@@ -48,6 +48,8 @@ JavaScript: Handles data fetching and DOM manipulation.​
 
 
 🙌 Acknowledgments
+**Date**(at file: utils.js): return current Date and has methods to get current hour.
+reference:https://www.w3schools.com/jsref/jsref_obj_date.asp
 **document.createElement**(at file: utils.js): uses Javascript to create a new HTML element at this case a div.
 reference: https://www.w3schools.com/jsref/met_document_createelement.asp
 
