@@ -39,7 +39,7 @@ title: Dashboard
             const cityId = event.currentTarget.id; // to get id from <a>, event carries details about the click action.
             localStorage.setItem("selectedCity", cityId);
 
-            window.location.href = `/index/`; // returns the href (URL) of the current page, redirecting the user to /index/
+            window.location.href = `/city_focus/?city=${cityId}`; // returns the href (URL) of the current page, redirecting the user to /index/
 
         } catch (error) {
             alert(error);
